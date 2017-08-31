@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"github.com/greg-szabo/tm-peek/cpu"
 	"github.com/greg-szabo/tm-peek/io"
+	"github.com/greg-szabo/tm-peek/tm"
 )
 
 func index(w http.ResponseWriter, r *http.Request) {
@@ -32,7 +33,7 @@ func ioUsage(w http.ResponseWriter, r *http.Request) {
 func tmUsage(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
-	if err := json.NewEncoder(w).Encode("x"); err != nil {
+	if err := json.NewEncoder(w).Encode(tm.Status(tendermintAddress)); err != nil {
 		panic(err)
 	}
 }

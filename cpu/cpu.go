@@ -5,7 +5,6 @@ import (
 	"strings"
 	"strconv"
 	"time"
-	"fmt"
 )
 
 type data struct {
@@ -43,7 +42,6 @@ func startMonitor() {
 	for {
 		newData := getData()
 		statStore = getStat(dataStore, newData)
-		fmt.Println(statStore)
 		dataStore = newData
 		time.Sleep(time.Second)
 	}
