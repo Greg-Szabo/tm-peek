@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/Greg-Szabo/tm-peek/restapi"
+	"github.com/greg-szabo/tm-peek/restapi"
 	"flag"
 )
 

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"html"
 	"encoding/json"
-	"github.com/Greg-Szabo/tm-peek/cpu"
-	"github.com/Greg-Szabo/tm-peek/io"
+	"github.com/greg-szabo/tm-peek/cpu"
+	"github.com/greg-szabo/tm-peek/io"
 )
 
 func index(w http.ResponseWriter, r *http.Request) {

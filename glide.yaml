@@ -1,4 +1,4 @@
-package: github.com/Greg-Szabo/tm-peek
+package: github.com/greg-szabo/tm-peek
 import:
 - package: github.com/gorilla/mux
   version: ~1.4.0
