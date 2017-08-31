@@ -30,4 +30,10 @@ var routes = []route{
 		"/io",
 		ioUsage,
 	},
+	route{
+		"TMUsage",
+		"GET",
+		"/tm",
+		tmUsage,
+	},
 }

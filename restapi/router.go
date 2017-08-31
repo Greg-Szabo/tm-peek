@@ -5,9 +5,13 @@ import (
 	"net/http"
 )
 
-func Router() *mux.Router {
+func Router()(*mux.Router) {
+	return router
+}
 
-	router := mux.NewRouter().StrictSlash(true)
+func createRouter() {
+
+	router = mux.NewRouter().StrictSlash(true)
 	for _, route := range routes {
 		var handler http.Handler
 
@@ -21,6 +25,6 @@ func Router() *mux.Router {
 			Handler(route.HandlerFunc)
 	}
 
-	return router
+	return
 }
 
