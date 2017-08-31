@@ -47,33 +47,29 @@ func Stat()(data) {
 func getData() (output data) {
 	contents, err := ioutil.ReadFile("/proc/diskstats")
 	if err != nil {
-		contents = []byte("0 0 vda 0 0 0 0 0 0 0 0 0 0 0")
+		contents = []byte("0 0 xvda 0 0 0 0 0 0 0 0 0 0 0")
 	}
 	lines := strings.Split(string(contents), "\n")
-	for _, line := range(lines) {
-		fields := strings.Fields(line)
-		if fields[2] == "vda" {
-			fielddata := new([11]uint64)
-			for i := 3; i < len(fields); i++ {
-				val, _ := strconv.ParseUint(fields[i], 10, 64)
-				fielddata[i-3] = val
-			}
-			return data{
-				fielddata[0],
-				fielddata[1],
-				fielddata[2],
-				fielddata[3],
-				fielddata[4],
-				fielddata[5],
-				fielddata[6],
-				fielddata[7],
-				fielddata[8],
-				fielddata[9],
-				fielddata[10],
-			}
-		}
+	line := lines[0]
+	fields := strings.Fields(line)
+	fielddata := new([11]uint64)
+	for i := 3; i < len(fields); i++ {
+		val, _ := strconv.ParseUint(fields[i], 10, 64)
+		fielddata[i-3] = val
 	}
-	return
+	return data{
+		fielddata[0],
+		fielddata[1],
+		fielddata[2],
+		fielddata[3],
+		fielddata[4],
+		fielddata[5],
+		fielddata[6],
+		fielddata[7],
+		fielddata[8],
+		fielddata[9],
+		fielddata[10],
+	}
 }
 
 func getStat(old, new data) (output data) {
