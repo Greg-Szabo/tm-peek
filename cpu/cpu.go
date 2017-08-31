@@ -1,3 +1,6 @@
+/*
+cpu.Stat() returns the CPU usage statistics from the past second.
+ */
 package cpu
 
 import (

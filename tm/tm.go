@@ -1,6 +1,9 @@
 package tm
 
-import "net/http"
+import (
+	"net/http"
+	"io/ioutil"
+)
 
 type data struct {
 	UnconfirmedTXs	uint64	`json:"unconfirmedTXs"`
@@ -17,7 +20,15 @@ type data struct {
 }
 
 
-func Status(tendermintAddress string)(resp *http.Response) {
-	resp, _ = http.Get(tendermintAddress + "/status")
-	return resp
+func Status(tendermintAddress string)(result string) {
+	resp, err := http.Get(tendermintAddress + "/status")
+	if err != nil {
+		return
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+	return string(body)
 }

@@ -1,3 +1,6 @@
+/*
+io.Stat() returns the IO statistics from the past 5 seconds.
+ */
 package io
 
 import (
@@ -36,7 +39,7 @@ func startMonitor() {
 		newData := getData()
 		statStore = getStat(dataStore, newData)
 		dataStore = newData
-		time.Sleep(time.Second)
+		time.Sleep(5 * time.Second)
 	}
 }
 
