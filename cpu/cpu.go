@@ -5,7 +5,7 @@ import (
 	"strings"
 	"strconv"
 	"time"
-	"runtime"
+	"fmt"
 )
 
 type data struct {
@@ -43,6 +43,7 @@ func startMonitor() {
 	for {
 		newData := getData()
 		statStore = getStat(dataStore, newData)
+		fmt.Println(statStore)
 		dataStore = newData
 		time.Sleep(time.Second)
 	}
@@ -53,28 +54,16 @@ func Stat()(stat) {
 }
 
 func getData() (output data) {
-	if runtime.GOOS == "darwin" {
-		return data{
-			dataStore.User + 1,
-			dataStore.Nice + 1,
-			dataStore.System + 1,
-			dataStore.Idle + 1,
-			dataStore.IOWait + 1,
-			dataStore.IRQ + 1,
-			dataStore.SoftIRQ + 1,
-			dataStore.Total + 7,
-		}
-	}
 	contents, err := ioutil.ReadFile("/proc/stat")
 	if err != nil {
-		return
+		contents = []byte("cpu 0 0 0 0 0 0 0 0")
 	}
 	lines := strings.Split(string(contents), "\n")
 	for _, line := range(lines) {
 		fields := strings.Fields(line)
 		if fields[0] == "cpu" {
-			fielddata := new([8]uint64)
-			for i := 1; i < len(fields); i++ {
+			fielddata := make([]uint64,8)
+			for i := 1; i < 8; i++ {
 				val, _ := strconv.ParseUint(fields[i], 10, 64)
 				fielddata[0] += val
 				fielddata[i] = val
@@ -95,13 +84,17 @@ func getData() (output data) {
 }
 
 func getStat(old, new data) (output stat) {
+	div := new.Total - old.Total
+	if div == 0 {
+		div = 1
+	}
 	return stat{
-		100. * (float32)(new.User - old.User) / (float32)(new.Total - old.Total),
-		100. * (float32)(new.Nice - old.Nice) / (float32)(new.Total - old.Total),
-		100. * (float32)(new.System - old.System) / (float32)(new.Total - old.Total),
-		100. * (float32)(new.Idle - old.Idle) / (float32)(new.Total - old.Total),
-		100. * (float32)(new.IOWait - old.IOWait) / (float32)(new.Total - old.Total),
-		100. * (float32)(new.IRQ - old.IRQ) / (float32)(new.Total - old.Total),
-		100. * (float32)(new.SoftIRQ - old.SoftIRQ) / (float32)(new.Total - old.Total),
+		100. * (float32)(new.User - old.User) / (float32)(div),
+		100. * (float32)(new.Nice - old.Nice) / (float32)(div),
+		100. * (float32)(new.System - old.System) / (float32)(div),
+		100. * (float32)(new.Idle - old.Idle) / (float32)(div),
+		100. * (float32)(new.IOWait - old.IOWait) / (float32)(div),
+		100. * (float32)(new.IRQ - old.IRQ) / (float32)(div),
+		100. * (float32)(new.SoftIRQ - old.SoftIRQ) / (float32)(div),
 	}
 }

@@ -5,7 +5,6 @@ import (
 	"strings"
 	"strconv"
 	"time"
-	"runtime"
 )
 
 type data struct {
@@ -46,24 +45,9 @@ func Stat()(data) {
 }
 
 func getData() (output data) {
-	if runtime.GOOS == "darwin" {
-		return data{
-			dataStore.ReadIOs + 1,
-			dataStore.ReadMerges + 1,
-			dataStore.ReadSectors + 1,
-			dataStore.ReadTicks + 1,
-			dataStore.WriteIOs + 1,
-			dataStore.WriteMerges + 1,
-			dataStore.WriteSectors + 1,
-			dataStore.WriteTicks + 1,
-			dataStore.InFlight + 1,
-			dataStore.IOTicks + 1,
-			dataStore.TimeInQueue + 1,
-		}
-	}
 	contents, err := ioutil.ReadFile("/proc/diskstats")
 	if err != nil {
-		return
+		contents = []byte("0 0 vda 0 0 0 0 0 0 0 0 0 0 0")
 	}
 	lines := strings.Split(string(contents), "\n")
 	for _, line := range(lines) {
