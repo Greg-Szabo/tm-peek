@@ -38,7 +38,7 @@ var (
 
 func init() {
 	dataStore = getData()
-	SetTimeFrame(5)
+	SetTimeFrame(2)
 	go startMonitor()
 }
 
@@ -112,7 +112,7 @@ func getStat(old, new data) (output stat) {
 	QIOWait := 100. * (float32)(new.IOWait - old.IOWait) / (float32)(div)
 	QIRQ := 100. * (float32)(new.IRQ - old.IRQ) / (float32)(div)
 	QSoftIRQ := 100. * (float32)(new.SoftIRQ - old.SoftIRQ) / (float32)(div)
-	return stat{
+/*	return stat{
 		QUser + exp * (statStore.User - QUser),
 		QNice + exp * (statStore.Nice - QNice),
 		QSystem + exp * (statStore.System - QSystem),
@@ -120,5 +120,15 @@ func getStat(old, new data) (output stat) {
 		QIOWait + exp * (statStore.IOWait - QIOWait),
 		QIRQ + exp * (statStore.IRQ - QIRQ),
 		QSoftIRQ + exp * (statStore.SoftIRQ - QSoftIRQ),
+	}
+*/
+	return stat {
+		QUser,
+		QNice,
+		QSystem,
+		QIdle,
+		QIOWait,
+		QIRQ,
+		QSoftIRQ,
 	}
 }
